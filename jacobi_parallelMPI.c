@@ -1,51 +1,9 @@
-/************************************************************
- * Program to solve a finite difference
- * discretization of the screened Poisson equation:
- * (d2/dx2)u + (d2/dy2)u - alpha u = f
- * with zero Dirichlet boundary condition using the iterative
- * Jacobi method with overrelaxation.
- *
- * RHS (source) function
- *   f(x,y) = -alpha*(1-x^2)(1-y^2)-2*[(1-x^2)+(1-y^2)]
- *
- * Analytical solution to the PDE
- *   u(x,y) = (1-x^2)(1-y^2)
- *
- * Current Version: Christian Iwainsky, RWTH Aachen University
- * MPI C Version: Christian Terboven, RWTH Aachen University, 2006
- * MPI Fortran Version: Dieter an Mey, RWTH Aachen University, 1999 - 2005
- * Modified: Sanjiv Shah,        Kuck and Associates, Inc. (KAI), 1998
- * Author:   Joseph Robicheaux,  Kuck and Associates, Inc. (KAI), 1998
- *
- * Unless READ_INPUT is defined, a meaningful input dataset is used (CT).
- *
- * Input : n     - grid dimension in x direction
- *         m     - grid dimension in y direction
- *         alpha - constant (always greater than 0.0)
- *         tol   - error tolerance for the iterative solver
- *         relax - Successice Overrelaxation parameter
- *         mits  - maximum iterations for the iterative solver
- *
- * On output
- *       : u(n,m)       - Dependent variable (solution)
- *       : f(n,m,alpha) - Right hand side function
- *
- *************************************************************/
-
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
 #include <mpi.h>
 
-
-/*************************************************************
- * Performs one iteration of the Jacobi method and computes
- * the residual value.
- *
- * NOTE: u(0,*), u(maxXCount-1,*), u(*,0) and u(*,maxYCount-1)
- * are BOUNDARIES and therefore not part of the solution.
- *************************************************************/
 double one_jacobi_iteration(double xStart, double yStart,
                           int maxXCount, int maxYCount,
                           double *src, double *dst,
@@ -83,10 +41,6 @@ double one_jacobi_iteration(double xStart, double yStart,
 }
 
 
-
- /**********************************************************
-  * Checks the error between numerical and exact solutions
-  **********************************************************/
 double checkSolution(double xStart, double yStart,
                      int maxXCount, int maxYCount,
                      double *u,
